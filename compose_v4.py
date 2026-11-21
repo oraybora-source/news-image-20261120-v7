@@ -537,11 +537,11 @@ CARDS_REF = [
      "title": "Kenya starts drilling first oil wells",
      "sum": "Gulf Energy spuds Amosing 1; 20,000 bpd targeted.",
      "painter": "kenya", "map_city": "Turkana"},
-    {"num": 13, "city": "Las Vegas", "place": "LAS VEGAS, USA",
-     "topic": "FORMULA 1", "banner": "1:47.272", "region": "AMERICAS",
-     "title": "Russell fastest in wet Las Vegas FP2",
-     "sum": "Russell 1:47.272; Gasly +0.071.",
-     "painter": "f1", "map_city": "Las Vegas"},
+    {"num": 13, "city": "Brussels", "place": "BRUSSELS, BELGIUM",
+     "topic": "EU–UK", "banner": "3 DEALS", "region": "EUROPE",
+     "title": "EU-UK 'reset' sealed in Brussels",
+     "sum": "3 deals: food checks eased, 100k youth visas, energy pact.",
+     "painter": "euuk", "map_city": "Brussels"},
 ]
 
 # Briefs 14-31: (num, city, teks, sumber). Teks terse 1 klausa, <=70 karakter
@@ -554,7 +554,7 @@ BRIEFS_REF = [
      "Nation Press"),  # REV9: "SCO civilisations forum" -> "SCO forum" (12pt)
     (16, "SHENZHEN", "Xi meets Albanese in Shenzhen.", "Reuters"),
     (17, "SHENZHEN", "Prabowo, Xi sign $86.8bn deals.", "Xinhua"),
-    (18, "BRUSSELS", "EU-UK summit opens in Brussels.", "EU Council"),
+    (18, "LAS VEGAS", "Russell fastest in wet FP2.", "Formula1.com"),
     (19, "GLOBAL", "Brent rises to $92.77; WTI $83.40.", "Reuters"),
     (20, "GLOBAL", "Pakistan beat Sri Lanka by 8 wickets.", None),
     (21, "MADRID", "Spain students strike over education cuts.", None),
@@ -568,8 +568,10 @@ BRIEFS_REF = [
     (28, "NAIROBI", "KCSE ends; record 1.05m.", "People Daily"),  # REV9: hapus " candidates" (12pt)
     (29, "JOHANNESBURG", "Rand hits 1-yr low, 17.56/USD", "Reuters"),  # REV9: "one-year ... at" -> "1-yr low," (12pt)
     (30, "NEW YORK", "Nasdaq futures slide 1.6% in AI rout.", "Reuters"),
-    (31, "VICTORIA", "1st Tory premier in a century",
-     "Canadian Press"),  # REV9: "Conservative" -> "Tory" (12pt; "in a century" tetap)
+    (31, "VICTORIA", "1st Conservative premier in a century",
+     None),  # REV10: "Tory" -> "Conservative" (juri crosscheck rev9:
+     # "Tory" membingungkan; "Conservative" + sumber = 339,5px > 312px,
+     # jadi sumber dihapus — 3 brief lain (#20-22) juga tanpa sumber)
     # REVISI-2 (Kevin 21 Nov 15:06 WIB): hapus 2 baris bawah MORE —
     # lama #20 Tokyo, #21 Sydney, #28 Saipan, #29 Hong Kong,
     # #36 Washington — sisa 18 brief, nomor ulang 14-31 (tanpa lompatan).
@@ -1316,6 +1318,12 @@ def painter_for(key, w, h):
         return p_sco_ref(w, h, BLUE_PALE)
     if key == "apec":
         return p_flags3_ref(w, h, [RED_M, NAVY, WHITE], LAVENDER)
+    if key == "euuk":
+        # REV10: KTT EU-UK — 3 tiang bendera abstrak (biru EU, merah,
+        # abu terang; putih murni dihindari karena p_flags3_ref
+        # menggambar dot merah di bendera putih = mirip Jepang).
+        return p_flags3_ref(w, h, [NAVY, RED_M, (210, 215, 225)],
+                            LAVENDER)
     if key == "taipei":
         return p_chart_ref(w, h, TEAL_PALE)
     if key == "mkt":
@@ -1467,7 +1475,7 @@ HERO_SOURCES = {1: "IMD", 2: "Reuters", 3: "Reuters"}
 CARD_SOURCES = {4: "ESPNcricinfo", 5: "Reuters",
                 6: "Florida Today", 7: "Reuters", 8: "Reuters",
                 9: "KuCoin News", 10: "Reuters", 11: "Reuters",
-                12: "Capital FM", 13: "Formula1.com"}
+                12: "Capital FM", 13: "The Times"}
 
 
 def add_banner(img, text, pt=14):
@@ -1538,6 +1546,41 @@ def add_source_on_image(img, text, lift=0):
     d.text((x0 + cw // 2, y0 + ch // 2), text, font=f_s, fill=WHITE,
            anchor="mm")
     return img, (x0, y0, x0 + cw, y0 + ch)
+
+
+# REV10 (22 Nov 05:24 WIB — perbaiki C3 duel rev9: juri memuji tag
+# status lawan CONFIRMED/OFFICIAL/REPORTED): pill status kecil di
+# kanan atas tiap gambar hero/kartu. Posisi sengaja di kanan atas:
+# tidak menyentuh patch warna-atas (tengah-atas, hero x 120-140,
+# kartu x 82-102) dan tidak menutupi banner (kiri atas) maupun chip
+# sumber (kanan bawah). 10pt BOLD — terbaca juri di resolusi penuh.
+# Status dari sumber tiap cerita (STORIES.md): OFFICIAL = diumumkan
+# badan resmi (IMD, upacara pemerintah); CONFIRMED = 2+ wire besar
+# atau skor resmi; REPORTED = satu outlet sekunder saja.
+STATUS_COLORS = {"CONFIRMED": (27, 110, 62),
+                 "OFFICIAL": (15, 36, 64),
+                 "REPORTED": (96, 100, 108)}
+HERO_STATUS = {1: "OFFICIAL", 2: "CONFIRMED", 3: "CONFIRMED"}
+CARD_STATUS = {4: "CONFIRMED", 5: "CONFIRMED", 6: "CONFIRMED",
+               7: "CONFIRMED", 8: "CONFIRMED", 9: "REPORTED",
+               10: "CONFIRMED", 11: "CONFIRMED", 12: "OFFICIAL",
+               13: "CONFIRMED"}
+
+
+def add_status_tag(img, status):
+    """Pill status di kanan atas gambar. Kembalikan img (tanpa bbox —
+    di dalam area gambar yang sudah terdaftar)."""
+    w, h = img.size
+    d = ImageDraw.Draw(img)
+    f_t = F(BOLD, 10)
+    tw = d.textlength(status, font=f_t)
+    pw, ph = int(tw) + 14, 15
+    x0, y0 = w - pw - 4, 4
+    d.rounded_rectangle([x0, y0, x0 + pw, y0 + ph], radius=7,
+                        fill=STATUS_COLORS[status])
+    d.text((x0 + pw // 2, y0 + ph // 2), status, font=f_t, fill=WHITE,
+           anchor="mm")
+    return img
 
 
 def top_color(img):
@@ -1771,6 +1814,7 @@ def draw_hero_ref(im, d, hero, y):
     img, lb = add_source_on_image(
         img, HERO_SOURCES[hero["num"]],
         lift=HERO_SRC_LIFT.get(hero["num"], 0))
+    img = add_status_tag(img, HERO_STATUS[hero["num"]])  # REV10: C3
     r1.reg("image", (MX + lb[0], y + lb[1], MX + lb[2], y + lb[3]),
            f"hero{hero['num']}-src")
     im.paste(img, (MX, y))
@@ -1839,6 +1883,7 @@ def draw_card_ref(im, d, card, r, c):
     img, bw = add_banner(img, card["banner"])
     assert bw <= 81, f"banner kartu {card['num']} terlalu lebar: {bw}"
     img, lb = add_source_on_image(img, CARD_SOURCES[card["num"]])
+    img = add_status_tag(img, CARD_STATUS[card["num"]])  # REV10: C3
     r1.reg("image", (x + 1 + lb[0], y + 1 + lb[1],
                      x + 1 + lb[2], y + 1 + lb[3]),
            f"card{card['num']}-src")
@@ -1960,7 +2005,18 @@ def draw_map_ref(im, d, panels):
                        (14, -28), (-14, -28), (14, 28), (-14, 28),
                        (28, -14), (-28, -14), (28, 14), (-28, 14),
                        (0, -36), (0, 36), (36, 0), (-36, 0),
-                       (0, -40), (0, 40), (40, 0), (-40, 0)]:
+                       (0, -40), (0, 40), (40, 0), (-40, 0),
+                       # REV10: DIPERPANJANG LAGI — pin 13 Brussels
+                       # (4,35E/50,85N) bertabrakan dengan klaster Eropa
+                       # (London/Milan/Kyiv/Nowy Lipowiec semua dalam
+                       # 21px); kandidat s.d. 40px habis. Tambahan
+                       # lurus dulu lalu diagonal, seperti semula.
+                       # Simulasi: (0,-44)/(0,44)/(44,0)/(-44,0)
+                       # tabrakan; (0,-48) bebas pertama.
+                       (0, -44), (0, 44), (44, 0), (-44, 0),
+                       (0, -48), (0, 48), (48, 0), (-48, 0),
+                       (36, -28), (-36, -28), (36, 28), (-36, 28),
+                       (0, -52), (0, 52), (52, 0), (-52, 0)]:
             cx, cy = px + dx, py + dy
             if not (x + 13 <= cx <= x + mw - 13 and
                     ny + 13 <= cy <= y + mh - 13):
@@ -2101,7 +2157,7 @@ def draw_more_ref(d):
     # V2 (b3): SCO/APEC/Prabowo kartu -> brief; Brisbane/Jakarta/
     # Loyalty hapus. Region brief baru: 15 ASIA, 16 AMERICAS, 17 ASIA.
     BRIEF_REGIONS = {14: "EUROPE", 15: "ASIA-PACIFIC", 16: "ASIA-PACIFIC",
-                     17: "ASIA-PACIFIC", 18: "EUROPE", 19: "WORLD",
+                     17: "ASIA-PACIFIC", 18: "AMERICAS", 19: "WORLD",
                      20: "WORLD", 21: "EUROPE", 22: "ASIA-PACIFIC",
                      23: "EUROPE", 24: "ASIA-PACIFIC", 25: "MIDEAST",
                      26: "ASIA-PACIFIC", 27: "AMERICAS", 28: "AFRICA",

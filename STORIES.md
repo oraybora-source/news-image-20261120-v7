@@ -27,6 +27,17 @@ Perubahan dari trial r10 (BUILD-NOTE.md):
   dicatat (hanya kartu kriket Wellington tersisa; Sydney dihapus
   Kevin rev-2 dan TIDAK ditambahkan lagi).
 
+**Rev10 (22 Nov 2026, perbaiki 3 alasan kalah duel rev9d):** kartu #13
+F1 → KTT EU–UK (naik dari brief #18 — satu-satunya cerita besar
+lawan yang terverifikasi Jumat dan ada di pool; Korea impeachment,
+Bukele, Nvidia probe, cancer pill, Suneung TIDAK ada di pool /
+Bukele 19 Nov / BepiColombo "Not yet" — tidak dipakai); F1 turun
+jadi brief #18; brief #31 "Tory" → "Conservative" (sumber dihapus
+karena tidak muat 312px); tag status CONFIRMED/OFFICIAL/REPORTED di
+13 gambar hero/kartu; pin 13 pindah Las Vegas → Brussels (offset
+(0,−48) karena klaster Eropa padat). Total tetap 31 cerita; region
+EUROPE 7 / AMERICAS 5 TIDAK berubah (tukar seimbang).
+
 ## Heroes (3)
 
 1. **Gopalpur — Cyclone.** Cyclone Akvan hits India's east coast.
@@ -89,10 +100,11 @@ Perubahan dari trial r10 (BUILD-NOTE.md):
     Energy Amosing 1 well pad"; CS Opiyo Wandayi presided over the
     spudding ceremony on Friday, November 20, at Amosing oilfield,
     South Lokichar Basin; first phase 20,000 bpd, first oil Dec 1)
-13. **Las Vegas — Formula 1.** Russell fastest in wet Las Vegas FP2.
-    Russell 1:47.272; Gasly +0.071. (Formula1.com, FP2 report
-    2026-11-20T05:17Z; sesi Kamis malam waktu Las Vegas / Jumat pagi
-    UTC)
+13. **Brussels — EU–UK summit.** EU-UK "reset" sealed in Brussels.
+    Three deals signed: food checks (SPS) eased, 100,000 youth
+    mobility visas a year, energy cooperation. (The Times / Consilium,
+    Fri 20 Nov 2026 — 2nd EU–UK summit; presser ~13:25 CET; F1
+    turun jadi brief #18 di rev10)
 
 ## Briefs (18)
 
@@ -109,8 +121,9 @@ Perubahan dari trial r10 (BUILD-NOTE.md):
     2026 — penandatanganan + pertemuan bilateral Jumat; angka total
     $86,8 miliar pertama disebut Prabowo Kamis 19 Nov di APEC —
     nuansa dicatat, klaim di gambar hanya soal penandatanganan Jumat)
-18. **Brussels:** EU-UK summit opens in Brussels. (Consilium / EEAS —
-    2nd EU–UK summit, Fri 20 Nov)
+18. **Las Vegas:** Russell fastest in wet FP2. (Formula1.com, FP2
+    report 2026-11-20T05:17Z; sesi Kamis malam waktu Las Vegas /
+    Jumat pagi UTC — turun dari kartu #13 di rev10)
 19. **Global:** Brent rises to $92.77; WTI $83.40. (Reuters, Fri
     20 Nov — snapshot Jumat 04:04 GMT, BUKAN close; label strip
     memakai "Friday morning")
